@@ -60,7 +60,6 @@
               <td
                 rowspan="2"
                 style="
-                  padding-left: 20px;
                   width: 180px;
                   height: 60px;
                   vertical-align: top;
@@ -123,7 +122,7 @@
               </td>
             </tr>
             <tr>
-              <td style="vertical-align: middle !important; padding-left: 20px">
+              <td style="vertical-align: middle !important;">
                 <a
                   href="http://www.sera.com.tr"
                   style="color: #007f7f; font-size: 11px; text-decoration: none"
@@ -140,21 +139,31 @@
           </tbody>
         </table>
         <div style="padding-top: 14px"></div>
-        <div
-          style="
-            width: 100%;
+        <img src="https://singnator.netlify.app/footer.png" 
+        
+        style="
+        width: 100%;
+        
             height: 63px;
             background-size: contain;
             background-repeat: no-repeat;
-            background-image: url(https://singnator.netlify.app/footer.png);
-          "
+            background-image: url(https://singnator.netlify.app/footer.png);"
         ></div>
       </div>
     </div>
-    <div class="card">
+
+    <div class="card" id="preview">
       <button onclick="generateSignatureCode()">İmza Çıktısı Al</button>
+    
+    <div id="previewplus" style="height: 190px;">
+
+    </div>
+    
+    <button onclick="selectAndCopy()">Taranmış Cıktı Kopyala</button>
+    </div>
+      <div class="card">
       <textarea id="output"></textarea>
-      <button onclick="copyToClipboard()">Kopyala</button>
+      <button onclick="copyToClipboard()">Html Cıktı Kopyala</button>
     </div>
     <script>
       function makeEditable(element) {
@@ -177,6 +186,7 @@
           .cloneNode(true);
         removeOnClick(signatureElement);
 
+        document.getElementById("previewplus").innerHTML = signatureElement.innerHTML;
         document.getElementById("output").value = signatureElement.innerHTML;
       }
 
@@ -185,7 +195,30 @@
           .querySelectorAll("[onclick]")
           .forEach((el) => el.removeAttribute("onclick"));
       }
-      function copyToClipboard() {
+      
+      function selectAndCopy() {
+    const div = document.getElementById("previewplus");
+
+    const range = document.createRange();
+    const selection = window.getSelection();
+
+    range.selectNodeContents(div);
+
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+     try {
+        document.execCommand("copy");
+        alert("Metin kopyalandı!");
+    } catch (err) {
+        console.error("Kopyalama başarısız:", err);
+    }
+
+    // Seçimi kaldırıyoruz (isteğe bağlı)
+    selection.removeAllRanges();
+}
+     
+function copyToClipboard() {
         const textarea = document.getElementById("output");
         textarea.select();
         textarea.setSelectionRange(0, 99999);  
