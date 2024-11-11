@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        justify-content: center;
+        align-items: center;
+        margin-top: 30px;
+        margin: 0px;
+      }
+      .card {
+        width: 600px;
+        display: flex;
+        min-height: 200px;
+        margin-top: 10px;
+        border-radius: 5px;
+        align-items: center;
+        flex-direction: column;
+        justify-content: flex-start;
+        background-color: #ffffff;
+      }
+      .card button {
+        border: 0;
+        width: 200px;
+        height: 25px;
+        color: #fff;
+        margin-top: 10px;
+        border-radius: 2px;
+        background-color: #007f7f;
+      }
+
+      .card textarea {
+        border: 0;
+        width: 90%;
+        min-width: 500px;
+        max-width: 580px;
+        color: #000000;
+        min-height: 100px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        border-radius: 2px;
+        background-color: #f4f4f473;
+      }
+      td {
+        vertical-align: bottom;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="signature">
+      <div style="width: 600px; height: 180px; background-color: #ffffff">
+        <div style="padding-top: 15px"></div>
+        <table style="width: 100%; border-collapse: collapse">
+          <tbody>
+            <tr style="height: 25px">
+              <td
+                rowspan="2"
+                style="
+                  padding-left: 20px;
+                  width: 180px;
+                  height: 60px;
+                  vertical-align: top;
+                "
+              >
+                <span
+                  style="
+                    color: #005f5f;
+                    font-size: 22px;
+                    font-weight: bold;
+                    cursor: pointer;
+                  "
+                  onclick="makeEditable(this)"
+                  >İsim Soyisim</span
+                >
+              </td>
+              <td>
+                <span
+                  style="
+                    font-size: 13px;
+                    bottom: 0;
+                    color: #000;
+                    font-weight: bold;
+                    cursor: pointer;
+                  "
+                  onclick="makeEditable(this)"
+                >
+                  Pozisyon Adı
+                </span>
+                <span style="color: #007f7f">/</span>
+                <span
+                  style="
+                    color: #007f7f;
+                    font-size: 13px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    bottom: 0;
+                  "
+                  onclick="makeEditable(this)"
+                >
+                  Position Name
+                </span>
+              </td>
+            </tr>
+            <tr style="height: 25px">
+              <td>
+                <p style="font-size: 10px">
+                  <span onclick="makeEditable(this)"
+                    >name.lastname<span
+                      contenteditable="false"
+                      style="color: #007f7f"
+                      >@sera.com.tr</span
+                    ></span
+                  >
+                  <span style="color: #007f7f">/</span>
+                  <span onclick="makeEditable(this)"> 0 (212) 265 60 00</span>
+                  <span style="color: #007f7f">/</span>
+                  <span onclick="makeEditable(this)"> 0 (533) 000 00 00</span>
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="vertical-align: middle !important; padding-left: 20px">
+                <a
+                  href="http://www.sera.com.tr"
+                  style="color: #007f7f; font-size: 11px; text-decoration: none"
+                  >www.sera.com.tr</a
+                >
+              </td>
+              <td>
+                <p style="font-size: 10px; margin: 0">
+                  Manolya Sok. Ihlamurlu Köşk No: 30<br />Bebek,
+                  Beşiktaş/İstanbul
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="padding-top: 14px"></div>
+        <div
+          style="
+            width: 100%;
+            height: 63px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-image: url(/footer.png);
+          "
+        ></div>
+      </div>
+    </div>
+    <div class="card">
+      <button onclick="generateSignatureCode()">İmza Çıktısı Al</button>
+      <textarea id="output"></textarea>
+      <button onclick="copyToClipboard()">Kopyala</button>
+    </div>
+    <script>
+      function makeEditable(element) {
+        element.contentEditable = true;
+        element.focus();
+        element.onblur = function () {
+          element.contentEditable = false;
+        };
+        element.onkeypress = function (e) {
+          if (e.key === "Enter") {
+            element.contentEditable = false;
+            e.preventDefault();
+          }
+        };
+      }
+
+      function generateSignatureCode() {
+        let signatureElement = document
+          .getElementById("signature")
+          .cloneNode(true);
+        removeOnClick(signatureElement);
+
+        document.getElementById("output").value = signatureElement.innerHTML;
+      }
+
+      function removeOnClick(element) {
+        element
+          .querySelectorAll("[onclick]")
+          .forEach((el) => el.removeAttribute("onclick"));
+      }
+      function copyToClipboard() {
+        const textarea = document.getElementById("output");
+        textarea.select();
+        textarea.setSelectionRange(0, 99999);  
+        document.execCommand("copy");
+        alert("Kopyalandı!");
+      }
+    </script>
+  </body>
+</html>
