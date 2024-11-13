@@ -58,7 +58,7 @@
 
 <body style="font-family:Arial, Helvetica, sans-serif">
   <div id="signature">
-    <div style="width: 500px; height: 162px; background-color: #ffffff">
+    <div style="width: 500px; height: 190px; background-color: #ffffff">
       <div style="padding-top: 15px"></div>
       <table style="width: 100%; border-collapse: collapse">
         <tbody>
@@ -169,19 +169,7 @@
     }
     
     function setNumber(element) {
-      
-      element.attr.setAttr("href",`tel:${element.innerText}`) 
-
-      element.focus();
-      element.onblur = function () {
-        element.contentEditable = false;
-      };
-      element.onkeypress = function (e) {
-        if (e.key === "Enter") {
-          element.contentEditable = false;
-          e.preventDefault();
-        }
-      };
+      element.setAttribute("href", `tel:${element.innerText}`);
     }
     function generateSignatureCode() {
       let signatureElement = document
