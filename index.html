@@ -56,20 +56,19 @@
   </style>
 </head>
 
-<body style=" font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+<body style="font-family:Arial, Helvetica, sans-serif">
   <div id="signature">
-    <div style="width: 500px; height: 180px; background-color: #ffffff">
+    <div style="width: 500px; height: 162px; background-color: #ffffff">
       <div style="padding-top: 15px"></div>
       <table style="width: 100%; border-collapse: collapse">
         <tbody>
           <tr style="height: 25px">
             <td rowspan="2" style="
-                  width: 180px;
+                  width: 162px;
                   height: 60px;
                   vertical-align: top;
                 ">
-              <span style="
-                  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              <span style="font-family:Arial, Helvetica, sans-serif;
                     color: #005f5f;
                     font-size: 22px;
                     font-weight: bold;
@@ -99,14 +98,20 @@
             </td>
           </tr>
           <tr style="height: 25px">
-            <td>
+            <td style="font-family:Arial, Helvetica, sans-serif">
               <p style="font-size: 10px;font-weight: 600;">
                 <span onclick="makeEditable(this)">name.lastname<span contenteditable="false"
                     style="color: #007f7f">@sera.com.tr</span></span>
                 <span style="color: #007f7f">/</span>
-                <span onclick="makeEditable(this)"> 0 (212) 265 60 00</span>
+                <a onclick="makeEditable(this)" 
+                  href=""
+                  style="color:#052728; text-decoration: none;">0 (212) 265 60 00</a>
                 <span style="color: #007f7f">/</span>
-                <span onclick="makeEditable(this)"> 0 (533) 000 00 00</span>
+                <a 
+                oninput="setNumber(this)" 
+                onclick="makeEditable(this)" 
+                  href="" 
+                  style="color:#052728; text-decoration: none;">0 (533) 000 00 00</a>
               </p>
             </td>
           </tr>
@@ -162,7 +167,22 @@
         }
       };
     }
+    
+    function setNumber(element) {
+      
+      element.attr.setAttr("href",`tel:${element.innerText}`) 
 
+      element.focus();
+      element.onblur = function () {
+        element.contentEditable = false;
+      };
+      element.onkeypress = function (e) {
+        if (e.key === "Enter") {
+          element.contentEditable = false;
+          e.preventDefault();
+        }
+      };
+    }
     function generateSignatureCode() {
       let signatureElement = document
         .getElementById("signature")
