@@ -99,18 +99,17 @@
           </tr>
           <tr style="height: 25px">
             <td style="font-family:Arial, Helvetica, sans-serif">
-              <p style="font-size: 10px;font-weight: 600;">
-                <span onclick="makeEditable(this)">name.lastname<span contenteditable="false"
-                    style="color: #007f7f">@sera.com.tr</span></span>
+              <p style="font-size:10px; font-weight:500; color: #052728;">
+                <a oninput="setMail(this)" style="text-decoration: none; color: #052728;"
+                  onclick="makeEditable(this)">name.lastname<span contenteditable="false" style="color: #007f7f">@sera.com.tr</span>
+                  </span>
+                </a>
+
                 <span style="color: #007f7f">/</span>
-                <a onclick="makeEditable(this)" 
-                  href=""
+                <a oninput="setNumber(this)" onclick="makeEditable(this)"
                   style="color:#052728; text-decoration: none;">0 (212) 265 60 00</a>
                 <span style="color: #007f7f">/</span>
-                <a 
-                oninput="setNumber(this)" 
-                onclick="makeEditable(this)" 
-                  href="" 
+                <a oninput="setNumber(this)" onclick="makeEditable(this)"
                   style="color:#052728; text-decoration: none;">0 (533) 000 00 00</a>
               </p>
             </td>
@@ -130,12 +129,7 @@
         </tbody>
       </table>
       <div></div>
-      <img src="https://singnator.netlify.app/footer.jpg" style="
-        width: 500px;    
-            height: 63px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-image: url(https://singnator.netlify.app/footer.jpg);">
+      <img src="https://singnator.netlify.app/footer.jpg" style="width: 500px;height: 63px;">
     </div>
   </div>
   </div>
@@ -167,9 +161,13 @@
         }
       };
     }
-    
+
     function setNumber(element) {
       element.setAttribute("href", `tel:${element.innerText}`);
+    }
+
+    function setMail(element) {
+      element.setAttribute("href", `mailto:${element.innerText}`);
     }
     function generateSignatureCode() {
       let signatureElement = document
@@ -184,6 +182,13 @@
     }
 
     function removeOnClick(element) {
+      element
+        .querySelectorAll("[onclick]")
+        .forEach((el) => el.removeAttribute("onclick"));
+      element
+        .querySelectorAll("[onclick]")
+        .forEach((el) => el.removeAttribute("onclick"));
+
       element
         .querySelectorAll("[onclick]")
         .forEach((el) => el.removeAttribute("onclick"));
