@@ -124,7 +124,7 @@
           </tr>
         </tbody>
       </table>
-      <div ></div>
+      <div></div>
       <img src="https://singnator.netlify.app/footer.png" style="
         width: 500px;    
             height: 63px;
@@ -169,6 +169,8 @@
         .cloneNode(true);
       removeOnClick(signatureElement);
 
+      removeCursorPointer(signatureElement);
+
       document.getElementById("previewplus").innerHTML = signatureElement.innerHTML;
       document.getElementById("output").value = signatureElement.innerHTML;
     }
@@ -177,8 +179,18 @@
       element
         .querySelectorAll("[onclick]")
         .forEach((el) => el.removeAttribute("onclick"));
+      element
+        .querySelectorAll("[onclick]")
+        .forEach((el) => el.removeAttribute("onclick"));
     }
-
+    function removeCursorPointer(element) {
+      element.style.cursor = "";
+      element.querySelectorAll("*").forEach(el => {
+        if (el.style.cursor === "pointer") {
+          el.style.cursor = "";
+        }
+      });
+    }
     function selectAndCopy() {
       const div = document.getElementById("previewplus");
 
