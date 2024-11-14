@@ -1,230 +1,248 @@
 <!DOCTYPE html>
 <html lang="tr">
-  <head>
-    <style>
-      body {
-        display: flex;
-        flex-direction: column;
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        justify-content: center;
-        align-items: center;
-        margin-top: 30px;
-        margin: 0px;
-      }
-      .card {
-        width: 600px;
-        display: flex;
-        min-height: 200px;
-        margin-top: 10px;
-        border-radius: 5px;
-        align-items: center;
-        flex-direction: column;
-        justify-content: flex-start;
-        background-color: #ffffff;
-      }
-      .card button {
-        border: 0;
-        width: 200px;
-        height: 25px;
-        color: #fff;
-        margin-top: 10px;
-        border-radius: 2px;
-        background-color: #007f7f;
-      }
 
-      .card textarea {
-        border: 0;
-        width: 90%;
-        min-width: 500px;
-        max-width: 580px;
-        color: #000000;
-        min-height: 100px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        border-radius: 2px;
-        background-color: #f4f4f473;
-      }
-      td {
-        vertical-align: bottom;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="signature">
-      <div style="width: 600px; height: 180px; background-color: #ffffff">
-        <div style="padding-top: 15px"></div>
-        <table style="width: 100%; border-collapse: collapse">
-          <tbody>
-            <tr style="height: 25px">
-              <td
-                rowspan="2"
-                style="
-                  width: 180px;
-                  height: 60px;
-                  vertical-align: top;
-                "
-              >
-                <span
-                  style="
-                    color: #005f5f;
-                    font-size: 22px;
-                    font-weight: bold;
-                    cursor: pointer;
-                  "
-                  onclick="makeEditable(this)"
-                  >İsim Soyisim</span
-                >
-              </td>
-              <td>
-                <span
-                  style="
-                    font-size: 13px;
-                    bottom: 0;
-                    color: #000;
-                    font-weight: bold;
-                    cursor: pointer;
-                  "
-                  onclick="makeEditable(this)"
-                >
-                  Pozisyon Adı
-                </span>
-                <span style="color: #007f7f">/</span>
-                <span
-                  style="
-                    color: #007f7f;
-                    font-size: 13px;
-                    font-weight: bold;
-                    cursor: pointer;
-                    bottom: 0;
-                  "
-                  onclick="makeEditable(this)"
-                >
-                  Position Name
-                </span>
-              </td>
-            </tr>
-            <tr style="height: 25px">
-              <td>
-                <p style="font-size: 10px">
-                  <span onclick="makeEditable(this)"
-                    >name.lastname<span
-                      contenteditable="false"
-                      style="color: #007f7f"
-                      >@sera.com.tr</span
-                    ></span
-                  >
-                  <span style="color: #007f7f">/</span>
-                  <span onclick="makeEditable(this)"> 0 (212) 265 60 00</span>
-                  <span style="color: #007f7f">/</span>
-                  <span onclick="makeEditable(this)"> 0 (533) 000 00 00</span>
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td style="vertical-align: middle !important;">
-                <a
-                  href="http://www.sera.com.tr"
-                  style="color: #007f7f; font-size: 11px; text-decoration: none"
-                  >www.sera.com.tr</a
-                >
-              </td>
-              <td>
-                <p style="font-size: 10px; margin: 0">
-                  Manolya Sok. Ihlamurlu Köşk No: 30<br />Bebek,
-                  Beşiktaş/İstanbul
-                </p>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div style="padding-top: 14px"></div>
-        <img src="https://singnator.netlify.app/footer.png" 
-        
-        style="
-        width: 100%;
-        
-            height: 63px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-image: url(https://singnator.netlify.app/footer.png);"
-        ></div>
-      </div>
-    </div>
+<head>
 
-    <div class="card" id="preview">
-      <button onclick="generateSignatureCode()">İmza Çıktısı Al</button>
-    
-    <div id="previewplus" style="height: 190px;">
-
-    </div>
-    
-    <button onclick="selectAndCopy()">Taranmış Cıktı Kopyala</button>
-    </div>
-      <div class="card">
-      <textarea id="output"></textarea>
-      <button onclick="copyToClipboard()">Html Cıktı Kopyala</button>
-    </div>
-    <script>
-      function makeEditable(element) {
-        element.contentEditable = true;
-        element.focus();
-        element.onblur = function () {
-          element.contentEditable = false;
-        };
-        element.onkeypress = function (e) {
-          if (e.key === "Enter") {
-            element.contentEditable = false;
-            e.preventDefault();
-          }
-        };
-      }
-
-      function generateSignatureCode() {
-        let signatureElement = document
-          .getElementById("signature")
-          .cloneNode(true);
-        removeOnClick(signatureElement);
-
-        document.getElementById("previewplus").innerHTML = signatureElement.innerHTML;
-        document.getElementById("output").value = signatureElement.innerHTML;
-      }
-
-      function removeOnClick(element) {
-        element
-          .querySelectorAll("[onclick]")
-          .forEach((el) => el.removeAttribute("onclick"));
-      }
-      
-      function selectAndCopy() {
-    const div = document.getElementById("previewplus");
-
-    const range = document.createRange();
-    const selection = window.getSelection();
-
-    range.selectNodeContents(div);
-
-    selection.removeAllRanges();
-    selection.addRange(range);
-
-     try {
-        document.execCommand("copy");
-        alert("Metin kopyalandı!");
-    } catch (err) {
-        console.error("Kopyalama başarısız:", err);
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      justify-content: center;
+      align-items: center;
+      margin-top: 30px;
+      margin: 0px;
     }
 
-    // Seçimi kaldırıyoruz (isteğe bağlı)
-    selection.removeAllRanges();
-}
-     
-function copyToClipboard() {
-        const textarea = document.getElementById("output");
-        textarea.select();
-        textarea.setSelectionRange(0, 99999);  
+    .card {
+      width: 500px;
+      display: flex;
+      min-height: 200px;
+      margin-top: 10px;
+      border-radius: 5px;
+      align-items: center;
+      flex-direction: column;
+      justify-content: flex-start;
+      background-color: #ffffff;
+    }
+
+    .card button {
+      border: 0;
+      width: 200px;
+      height: 25px;
+      color: #fff;
+      margin-top: 10px;
+      border-radius: 2px;
+      background-color: #007f7f;
+    }
+
+    .card textarea {
+      border: 0;
+      width: 90%;
+      min-width: 500px;
+      max-width: 580px;
+      color: #000000;
+      min-height: 100px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border-radius: 2px;
+      background-color: #f4f4f473;
+    }
+
+    td {
+      vertical-align: bottom;
+    }
+  </style>
+</head>
+
+<body style="font-family:Arial, Helvetica, sans-serif">
+  <div id="targetElement">
+    <div id="signature">
+        <div style="width: 360px; background-color: #ffffff">
+            <div style="padding-top: 15px"></div>
+            <table style="width: 100%; border-collapse: collapse">
+                <tbody>
+                    <tr style="height: 25px">
+                        <td style="
+                  vertical-align: top;
+                ">
+                            <span style="font-family:Arial, Helvetica, sans-serif;
+                    color: #005f5f;
+                    font-size: 20px;
+                    font-weight: bold;
+                    cursor: pointer;
+                  " onclick="makeEditable(this)">İsim Soyisim</span>
+                        </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <span style="
+                font-size: 13px;
+                bottom: 0;
+                color: #000;
+                font-weight: bold;
+                cursor: pointer;
+              vertical-align: top;
+              " onclick="makeEditable(this)">
+                            Pozisyon Adı 
+                        </span>
+                        <span style="color: #007f7f">/</span>
+                        <span style="
+                color: #007f7f;
+                font-size: 13px;
+                font-weight: bold;
+                cursor: pointer;
+                bottom: 0;
+              vertical-align: top;
+                
+              " onclick="makeEditable(this)">
+                            Position Name
+                        </span>
+                    </td>
+                    </tr>
+                    <tr style="height: 25px">
+                        <td style="font-family:Arial, Helvetica, sans-serif">
+                            <p style="font-size:10px;margin-bottom:5px; font-weight:500; color: #052728;">
+                                <a oninput="setMail(this)" style="text-decoration: none; color: #052728;"
+                                    onclick="makeEditable(this)">name. lastname<span contenteditable="false"
+                                        style="color: #007f7f">@sera.com.tr</span>
+                                    </span>
+                                </a>
+                                <span style="color: #007f7f">/</span>
+                                <a oninput="setNumber(this)" onclick="makeEditable(this)"
+                                    style="color:#052728; text-decoration: none;">0 (212) 265 60 00</a>
+                                <span style="color: #007f7f">/</span>
+                                <a oninput="setNumber(this)" onclick="makeEditable(this)"
+                                    style="color:#052728; text-decoration: none;">0 (533) 000 00 00</a>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr style="height: 15px;">
+                      <td>
+                        <p style="font-size:10px; font-weight:500;margin:0; color: #052728;">
+                            Manolya Sok. Ihlamurlu Köşk No: 30 Bebek, Beşiktaş/İstanbul
+                        </p>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: middle !important; height: 30px;">
+                            <a href="http://www.sera.com.tr" style="
+                              color: #007f7f;
+                              font-size:10px;
+                              font-weight:500;
+                              text-decoration: none;">www.sera.com.tr</a>
+                        </td>
+                    </tr>
+                    <tr>
+                    <td>
+                      <img src="https://singnator.netlify.app/footer2x.png?width=160" style="width: 360px;">
+                    </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+  <div class="card" id="preview">
+    <button onclick="generateSignatureCode()" style="margin-top: 10px;">İmza Çıktısı Al</button>
+
+    <div id="previewplus" style="height: 220px;"></div>
+
+    <button onclick="selectAndCopy()"style="margin-top: 10px;">Taranmış Cıktı Kopyala</button>
+  </div>
+  <div class="card">
+    <textarea id="output"></textarea>
+    <button onclick="copyToClipboard()">Html Cıktı Kopyala</button>
+  </div>
+  <script>
+    function makeEditable(element) {
+      element.contentEditable = true;
+      element.focus();
+      element.onblur = function () {
+        element.contentEditable = false;
+      };
+      element.onkeypress = function (e) {
+        if (e.key === "Enter") {
+          element.contentEditable = false;
+          e.preventDefault();
+        }
+      };
+    }
+
+    function setNumber(element) {
+      element.setAttribute("href", `tel:${element.innerText}`);
+    }
+
+    function setMail(element) {
+      element.setAttribute("href", `mailto:${element.innerText}`);
+    }
+    function generateSignatureCode() {
+      let signatureElement = document
+        .getElementById("signature")
+        .cloneNode(true);
+      removeOnClick(signatureElement);
+
+      removeCursorPointer(signatureElement);
+
+      document.getElementById("previewplus").innerHTML = signatureElement.innerHTML;
+      document.getElementById("output").value = signatureElement.innerHTML;
+    }
+
+    function removeOnClick(element) {
+      element
+        .querySelectorAll("[onclick]")
+        .forEach((el) => el.removeAttribute("onclick"));
+      element
+        .querySelectorAll("[onclick]")
+        .forEach((el) => el.removeAttribute("onclick"));
+
+      element
+        .querySelectorAll("[onclick]")
+        .forEach((el) => el.removeAttribute("onclick"));
+      element
+        .querySelectorAll("[onclick]")
+        .forEach((el) => el.removeAttribute("onclick"));
+    }
+    function removeCursorPointer(element) {
+      element.style.cursor = "";
+      element.querySelectorAll("*").forEach(el => {
+        if (el.style.cursor === "pointer") {
+          el.style.cursor = "";
+        }
+      });
+    }
+    function selectAndCopy() {
+      const div = document.getElementById("previewplus");
+
+      const range = document.createRange();
+      const selection = window.getSelection();
+
+      range.selectNodeContents(div);
+
+      selection.removeAllRanges();
+      selection.addRange(range);
+
+      try {
         document.execCommand("copy");
-        alert("Kopyalandı!");
+        alert("Metin kopyalandı!");
+      } catch (err) {
+        console.error("Kopyalama başarısız:", err);
       }
-    </script>
-  </body>
+
+      // Seçimi kaldırıyoruz (isteğe bağlı)
+      selection.removeAllRanges();
+    }
+
+    function copyToClipboard() {
+      const textarea = document.getElementById("output");
+      textarea.select();
+      textarea.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      alert("Kopyalandı!");
+    }
+  </script>
+</body>
+
 </html>
