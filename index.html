@@ -59,14 +59,12 @@
 <body style="font-family:Arial, Helvetica, sans-serif">
   <div id="targetElement">
     <div id="signature">
-        <div style="width: 550px; height: 190px; background-color: #ffffff">
+        <div style="width: 360px; background-color: #ffffff">
             <div style="padding-top: 15px"></div>
             <table style="width: 100%; border-collapse: collapse">
                 <tbody>
                     <tr style="height: 25px">
-                        <td rowspan="2" style="
-                  width: 170px;
-                  height: 60px;
+                        <td style="
                   vertical-align: top;
                 ">
                             <span style="font-family:Arial, Helvetica, sans-serif;
@@ -76,40 +74,41 @@
                     cursor: pointer;
                   " onclick="makeEditable(this)">İsim Soyisim</span>
                         </td>
-                        <td>
-                            <span style="
-                    font-size: 13px;
-                    bottom: 0;
-                    color: #000;
-                    font-weight: bold;
-                    cursor: pointer;
-                  vertical-align: top;
-                  " onclick="makeEditable(this)">
-                                Pozisyon Adı
-                            </span>
-                            <span style="color: #007f7f">/</span>
-                            <span style="
-                    color: #007f7f;
-                    font-size: 13px;
-                    font-weight: bold;
-                    cursor: pointer;
-                    bottom: 0;
-                  vertical-align: top;
-                    
-                  " onclick="makeEditable(this)">
-                                Position Name
-                            </span>
-                        </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <span style="
+                font-size: 13px;
+                bottom: 0;
+                color: #000;
+                font-weight: bold;
+                cursor: pointer;
+              vertical-align: top;
+              " onclick="makeEditable(this)">
+                            Pozisyon Adı 
+                        </span>
+                        <span style="color: #007f7f">/</span>
+                        <span style="
+                color: #007f7f;
+                font-size: 13px;
+                font-weight: bold;
+                cursor: pointer;
+                bottom: 0;
+              vertical-align: top;
+                
+              " onclick="makeEditable(this)">
+                            Position Name
+                        </span>
+                    </td>
                     </tr>
                     <tr style="height: 25px">
                         <td style="font-family:Arial, Helvetica, sans-serif">
-                            <p style="font-size:10px; font-weight:500; color: #052728;">
+                            <p style="font-size:10px;margin-bottom:5px; font-weight:500; color: #052728;">
                                 <a oninput="setMail(this)" style="text-decoration: none; color: #052728;"
-                                    onclick="makeEditable(this)">name.lastname<span contenteditable="false"
+                                    onclick="makeEditable(this)">name. lastname<span contenteditable="false"
                                         style="color: #007f7f">@sera.com.tr</span>
                                     </span>
                                 </a>
-
                                 <span style="color: #007f7f">/</span>
                                 <a oninput="setNumber(this)" onclick="makeEditable(this)"
                                     style="color:#052728; text-decoration: none;">0 (212) 265 60 00</a>
@@ -119,34 +118,39 @@
                             </p>
                         </td>
                     </tr>
+                    <tr style="height: 15px;">
+                      <td>
+                        <p style="font-size:10px; font-weight:500;margin:0; color: #052728;">
+                            Manolya Sok. Ihlamurlu Köşk No: 30 Bebek, Beşiktaş/İstanbul
+                        </p>
+                    </td>
+                    </tr>
                     <tr>
-                        <td style="vertical-align: middle !important;">
-                            <a href="http://www.sera.com.tr"
-                                style="color: #007f7f; font-size:10px; font-weight:500;  text-decoration: none;">www.sera.com.tr</a>
+                        <td style="vertical-align: middle !important; height: 30px;">
+                            <a href="http://www.sera.com.tr" style="
+                              color: #007f7f;
+                              font-size:10px;
+                              font-weight:500;
+                              text-decoration: none;">www.sera.com.tr</a>
                         </td>
-                        <td>
-                            <p style="font-size:10px; font-weight:500; color: #052728;">
-                                Manolya Sok. Ihlamurlu Köşk No: 30<br />Bebek,
-                                Beşiktaş/İstanbul
-                            </p>
-                        </td>
+                    </tr>
+                    <tr>
+                    <td>
+                      <img src="https://singnator.netlify.app/footer2x.png" style="width: 360px;">
+                    </td>
                     </tr>
                 </tbody>
             </table>
-            <div></div>
-            <img src="https://singnator.netlify.app/footer550.jpg" style="width: 550px;height: 63px;">
         </div>
     </div>
 </div>
 
   <div class="card" id="preview">
-    <button onclick="generateSignatureCode()">İmza Çıktısı Al</button>
+    <button onclick="generateSignatureCode()" style="margin-top: 10px;">İmza Çıktısı Al</button>
 
-    <div id="previewplus" style="height: 190px;">
+    <div id="previewplus" style="height: 220px;"></div>
 
-    </div>
-
-    <button onclick="selectAndCopy()">Taranmış Cıktı Kopyala</button>
+    <button onclick="selectAndCopy()"style="margin-top: 10px;">Taranmış Cıktı Kopyala</button>
   </div>
   <div class="card">
     <textarea id="output"></textarea>
