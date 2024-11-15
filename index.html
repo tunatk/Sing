@@ -2,7 +2,7 @@
 <html lang="tr">
 
 <head>
-
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     body {
       display: flex;
@@ -16,9 +16,9 @@
     }
 
     .card {
-      width: 500px;
+      width: 380px;
       display: flex;
-      min-height: 200px;
+      min-height: 50px;
       margin-top: 10px;
       border-radius: 5px;
       align-items: center;
@@ -40,7 +40,6 @@
     .card textarea {
       border: 0;
       width: 90%;
-      min-width: 500px;
       max-width: 580px;
       color: #000000;
       min-height: 100px;
@@ -58,17 +57,15 @@
 
 <body style="font-family:Arial, Helvetica, sans-serif">
   <div id="targetElement">
-    <div id="signature">
-        <div style="width: 360px; background-color: #ffffff">
+    <div id="signature" style="width: 380px;">
+        <div style="width: 380px; background-color: #ffffff">
             <div style="padding-top: 15px"></div>
-            <table style="width: 100%; border-collapse: collapse">
+            <table style="width: 360px;border-collapse: collapse;margin: 9px;">
                 <tbody>
                     <tr style="height: 25px">
-                        <td style="
-                  vertical-align: top;
-                ">
+                        <td style="vertical-align: top;">
                             <span style="font-family:Arial, Helvetica, sans-serif;
-                    color: #005f5f;
+                    color: #0F8093;
                     font-size: 20px;
                     font-weight: bold;
                     cursor: pointer;
@@ -80,7 +77,7 @@
                         <span style="
                 font-size: 13px;
                 bottom: 0;
-                color: #000;
+                color: #88AFB1;
                 font-weight: bold;
                 cursor: pointer;
               vertical-align: top;
@@ -89,7 +86,7 @@
                         </span>
                         <span style="color: #007f7f">/</span>
                         <span style="
-                color: #007f7f;
+                color: #0F8093;
                 font-size: 13px;
                 font-weight: bold;
                 cursor: pointer;
@@ -103,24 +100,24 @@
                     </tr>
                     <tr style="height: 25px">
                         <td style="font-family:Arial, Helvetica, sans-serif">
-                            <p style="font-size:10px;margin-bottom:5px; font-weight:500; color: #052728;">
-                                <a oninput="setMail(this)" style="text-decoration: none; color: #052728;"
+                            <p style="font-size:10px;margin-bottom:5px; font-weight:500; color: #88AFB1;">
+                                <a oninput="setMail(this)" style="text-decoration: none; color: #88AFB1;"
                                     onclick="makeEditable(this)">name. lastname<span contenteditable="false"
                                         style="color: #007f7f">@sera.com.tr</span>
                                     </span>
                                 </a>
                                 <span style="color: #007f7f">/</span>
                                 <a oninput="setNumber(this)" onclick="makeEditable(this)"
-                                    style="color:#052728; text-decoration: none;">0 (212) 265 60 00</a>
+                                    style="color:#88AFB1; text-decoration: none;">0 (212) 265 60 00</a>
                                 <span style="color: #007f7f">/</span>
                                 <a oninput="setNumber(this)" onclick="makeEditable(this)"
-                                    style="color:#052728; text-decoration: none;">0 (533) 000 00 00</a>
+                                    style="color:#88AFB1; text-decoration: none;">0 (533) 000 00 00</a>
                             </p>
                         </td>
                     </tr>
                     <tr style="height: 15px;">
                       <td>
-                        <p style="font-size:10px; font-weight:500;margin:0; color: #052728;">
+                        <p style="font-size:10px; font-weight:500;margin:0; color: #88AFB1;">
                             Manolya Sok. Ihlamurlu Köşk No: 30 Bebek, Beşiktaş/İstanbul
                         </p>
                     </td>
@@ -143,19 +140,23 @@
             </table>
         </div>
     </div>
+    <div class="card" id="preview">
+        <button onclick="generateSignatureCode()" style="margin-top: 10px;">İmza Çıktısı Al</button>
+        <div id="previewplus"></div>
+        <div hidden style="display: flex; justify-content: space-evenly; width: 100%;">
+          <button hidden style="width: auto;"onclick="selectAndCopy()"style="margin-top: 10px;">Taranmış Cıktı Kopyala</button>
+          <button hidden style="width: auto;" onclick="captureAsImage()">PNG Olarak Kaydet</button>
+        </div>
+      <div hidden ="card">
+        <textarea id="output"></textarea>
+        <button onclick="copyToClipboard()">Html Cıktı Kopyala</button>
+      </div>
+    
+    </div>
+  
 </div>
 
-  <div class="card" id="preview">
-    <button onclick="generateSignatureCode()" style="margin-top: 10px;">İmza Çıktısı Al</button>
-
-    <div id="previewplus" style="height: 220px;"></div>
-
-    <button onclick="selectAndCopy()"style="margin-top: 10px;">Taranmış Cıktı Kopyala</button>
-  </div>
-  <div class="card">
-    <textarea id="output"></textarea>
-    <button onclick="copyToClipboard()">Html Cıktı Kopyala</button>
-  </div>
+  
   <script>
     function makeEditable(element) {
       element.contentEditable = true;
@@ -178,12 +179,21 @@
     function setMail(element) {
       element.setAttribute("href", `mailto:${element.innerText}`);
     }
+  
     function generateSignatureCode() {
       let signatureElement = document
         .getElementById("signature")
         .cloneNode(true);
       removeOnClick(signatureElement);
 
+
+      
+      const hidden= document.querySelectorAll('[hidden]')
+      
+      hidden.forEach(element => {
+        element.removeAttribute("hidden")
+      });  
+      document.querySelectorAll("div")
       removeCursorPointer(signatureElement);
 
       document.getElementById("previewplus").innerHTML = signatureElement.innerHTML;
@@ -205,6 +215,7 @@
         .querySelectorAll("[onclick]")
         .forEach((el) => el.removeAttribute("onclick"));
     }
+   
     function removeCursorPointer(element) {
       element.style.cursor = "";
       element.querySelectorAll("*").forEach(el => {
@@ -213,6 +224,7 @@
         }
       });
     }
+   
     function selectAndCopy() {
       const div = document.getElementById("previewplus");
 
@@ -242,6 +254,23 @@
       document.execCommand("copy");
       alert("Kopyalandı!");
     }
+  
+    function captureAsImage() {
+        const div = document.querySelector("#previewplus").children[0].children[1]
+
+        // html2canvas ile div'in ekran görüntüsünü alıyoruz
+        html2canvas(div, {
+          backgroundColor: null, // Şeffaf arka plan
+          useCORS: true          // CORS hatalarını önlemek için
+        })
+          .then((canvas) => {
+            const link = document.createElement("a");
+            link.download = "signature.png"; // Dosya adı
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+          })
+          .catch((err) => console.error("PNG kaydedilemedi:", err));
+      }
   </script>
 </body>
 

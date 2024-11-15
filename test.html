@@ -1,110 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  </head>
 
-</head>
-
-<body>
+  <body>
     <div id="targetElement">
-        <div id="signature">
-            <div style="width: 520px; height: 190px; background-color: #ffffff">
-                <div style="padding-top: 15px"></div>
-                <table style="width: 100%; border-collapse: collapse">
-                    <tbody>
-                        <tr style="height: 25px">
-                            <td rowspan="2" style="
-                      width: 180px;
-                      height: 60px;
+      <div id="signature">
+        <div style="width: 360px; background-color: rgba(255, 255, 255, 0)">
+          <div style="padding-top: 15px"></div>
+          <table style="width: 100%; border-collapse: collapse">
+            <tbody>
+              <tr style="height: 25px">
+                <td style="vertical-align: top">
+                  <span
+                    style="
+                      font-family: Arial, Helvetica, sans-serif;
+                      color: rgb(0, 95, 95);
+                      font-size: 20px;
+                      font-weight: bold;
+                    "
+                    >İsim Soyisim</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span
+                    style="
+                      font-size: 13px;
+                      bottom: 0px;
+                      color: rgb(0, 0, 0);
+                      font-weight: bold;
                       vertical-align: top;
-                    ">
-                                <span style="font-family:Arial, Helvetica, sans-serif;
-                        color: #005f5f;
-                        font-size: 20px;
-                        font-weight: bold;
-                        cursor: pointer;
-                      " onclick="makeEditable(this)">İsim Soyisim</span>
-                            </td>
-                            <td>
-                                <span style="
-                        font-size: 13px;
-                        bottom: 0;
-                        color: #000;
-                        font-weight: bold;
-                        cursor: pointer;
-                      " onclick="makeEditable(this)">
-                                    Pozisyon Adı
-                                </span>
-                                <span style="color: #007f7f">/</span>
-                                <span style="
-                        color: #007f7f;
-                        font-size: 13px;
-                        font-weight: bold;
-                        cursor: pointer;
-                        bottom: 0;
-                      " onclick="makeEditable(this)">
-                                    Position Name
-                                </span>
-                            </td>
-                        </tr>
-                        <tr style="height: 25px">
-                            <td style="font-family:Arial, Helvetica, sans-serif">
-                                <p style="font-size:10px; font-weight:500; color: #052728;">
-                                    <a oninput="setMail(this)" style="text-decoration: none; color: #052728;"
-                                        onclick="makeEditable(this)">name.lastname<span contenteditable="false"
-                                            style="color: #007f7f">@sera.com.tr</span>
-                                        </span>
-                                    </a>
-
-                                    <span style="color: #007f7f">/</span>
-                                    <a oninput="setNumber(this)" onclick="makeEditable(this)"
-                                        style="color:#052728; text-decoration: none;">0 (212) 265 60 00</a>
-                                    <span style="color: #007f7f">/</span>
-                                    <a oninput="setNumber(this)" onclick="makeEditable(this)"
-                                        style="color:#052728; text-decoration: none;">0 (533) 000 00 00</a>
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align: middle !important;">
-                                <a href="http://www.sera.com.tr"
-                                    style="color: #007f7f; font-size:10px; font-weight:500;  text-decoration: none;">www.sera.com.tr</a>
-                            </td>
-                            <td>
-                                <p style="font-size:10px; font-weight:500; color: #052728;">
-                                    Manolya Sok. Ihlamurlu Köşk No: 30<br />Bebek,
-                                    Beşiktaş/İstanbul
-                                </p>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div></div>
-                <img src="https://singnator.netlify.app/footer.jpg" style="width: 520px;height: 63px;">
-            </div>
+                    "
+                  >
+                    Pozisyon Adı
+                  </span>
+                  <span style="color: #007f7f">/</span>
+                  <span
+                    style="
+                      color: rgb(0, 127, 127);
+                      font-size: 13px;
+                      font-weight: bold;
+                      bottom: 0px;
+                      vertical-align: top;
+                    "
+                  >
+                    Position Name
+                  </span>
+                </td>
+              </tr>
+              <tr style="height: 25px">
+                <td style="font-family: Arial, Helvetica, sans-serif">
+                  <p
+                    style="
+                      font-size: 10px;
+                      margin-bottom: 5px;
+                      font-weight: 500;
+                      color: #052728;
+                    "
+                  >
+                    <a
+                      oninput="setMail(this)"
+                      style="text-decoration: none; color: #052728"
+                      >name.lastname<span
+                        contenteditable="false"
+                        style="color: #007f7f"
+                        >@sera.com.tr</span
+                      >
+                    </a>
+                    <span style="color: #007f7f">/</span>
+                    <a
+                      oninput="setNumber(this)"
+                      style="color: #052728; text-decoration: none"
+                      >0 (212) 265 60 00</a
+                    >
+                    <span style="color: #007f7f">/</span>
+                    <a
+                      oninput="setNumber(this)"
+                      style="color: #052728; text-decoration: none"
+                      >0 (533) 000 00 00</a
+                    >
+                  </p>
+                </td>
+              </tr>
+              <tr style="height: 15px">
+                <td>
+                  <p
+                    style="
+                      font-size: 10px;
+                      font-weight: 500;
+                      margin: 0;
+                      color: #052728;
+                    "
+                  >
+                    Manolya Sok. Ihlamurlu Köşk No: 30 Bebek, Beşiktaş/İstanbul
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td style="vertical-align: middle !important; height: 30px">
+                  <a
+                    href="http://www.sera.com.tr"
+                    style="
+                      color: #007f7f;
+                      font-size: 10px;
+                      font-weight: 500;
+                      text-decoration: none;
+                    "
+                    >www.sera.com.tr</a
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <img
+                    src="https://singnator.netlify.app/footer2x.png"
+                    style="width: 360px"
+                    alt="Footer Image"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+      </div>
     </div>
 
-    <button onclick="captureAsImage()">Capture as Image</button>
+    <button onclick="captureAsImage()">PNG Olarak Kaydet</button>
 
     <script>
-        function captureAsImage() {
-            const element = document.getElementById("targetElement");
+      function captureAsImage() {
+        const div = document.getElementById("signature");
 
-            html2canvas(element, { useCORS: true, allowTaint: false }).then(canvas => {
-                // Resim dosyası olarak kaydetmek için
-                const link = document.createElement("a");
-                link.href = canvas.toDataURL("image/png");
-                link.download = "capture.png";
-                link.click();
-            });
-        }
+        // html2canvas ile div'in ekran görüntüsünü alıyoruz
+        html2canvas(div, {
+          backgroundColor: null, // Şeffaf arka plan
+          useCORS: true          // CORS hatalarını önlemek için
+        })
+          .then((canvas) => {
+            const link = document.createElement("a");
+            link.download = "signature.png"; // Dosya adı
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+          })
+          .catch((err) => console.error("PNG kaydedilemedi:", err));
+      }
     </script>
-
-</body>
-
+  </body>
 </html>
