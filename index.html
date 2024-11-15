@@ -63,13 +63,14 @@
             <table style="width: 360px;border-collapse: collapse;margin: 9px;">
                 <tbody>
                     <tr style="height: 25px">
-                        <td style="vertical-align: top;">
-                            <span style="font-family:Arial, Helvetica, sans-serif;
+                        <td style="vertical-align: top;"> 
+                            <span id="nameSpan" style="font-family:Arial, Helvetica, sans-serif; 
                     color: #0F8093;
                     font-size: 20px;
                     font-weight: bold;
                     cursor: pointer;
-                  " onclick="makeEditable(this)">İsim Soyisim</span>
+                  " 
+                  onclick="makeEditable(this)">İsim Soyisim</span>
                         </td>
                     </tr>
                     <tr>
@@ -257,7 +258,7 @@
   
     function captureAsImage() {
         const div = document.querySelector("#previewplus").children[0].children[1]
-
+      const name=  document.querySelector("#nameSpan").innerText.replace(" ","_")
         // html2canvas ile div'in ekran görüntüsünü alıyoruz
         html2canvas(div, {
           backgroundColor: null, // Şeffaf arka plan
@@ -265,7 +266,7 @@
         })
           .then((canvas) => {
             const link = document.createElement("a");
-            link.download = "signature.png"; // Dosya adı
+            link.download = name+"_signature.png"; // Dosya adı
             link.href = canvas.toDataURL("image/png");
             link.click();
           })
