@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uzaktan Su Pompası Kontrolü</title>
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script> <!-- MQTT JavaScript kütüphanesi -->
+<style>
+  body { 
+    font-family: 'Inter', sans-serif; 
+    background-color: #f0f4f8; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    margin: 0; 
+    padding: 20px; 
+    box-sizing: border-box; 
+    color: #34495e;
+  }
+  .container { 
+    background-color: #ffffff; 
+    padding: 30px; 
+    border-radius: 15px; 
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+    width: 100%; 
+    max-width: 450px; 
+    text-align: center; 
+  }
+  h1 { 
+    color: #2c3e50; 
+    margin-bottom: 25px; 
+    font-size: 1.8em; 
+  }
+  .status-section { 
+    margin-bottom: 25px; 
+    padding: 15px; 
+    border-radius: 10px; 
+    background-color: #ecf0f1; 
+  }
+  .status-text { 
+    font-size: 1.2em; 
+    font-weight: bold; 
+    color: #34495e; 
+  }
+  .status-indicator { 
+    display: inline-block; 
+    width: 20px; 
+    height: 20px; 
+    border-radius: 50%; 
+    margin-left: 10px; 
+    vertical-align: middle; 
+  }
+  .status-on { background-color: #2ecc71; }
+  .status-off { background-color: #e74c3c; }
+  .status-unknown { background-color: #f39c12; } /* Bağlantı/durum bilinmiyor */
+  .button-group { 
+    display: flex; 
+    justify-content: space-around; 
+    margin-bottom: 30px; 
+  }
+  .button { 
+    background-color: #3498db; 
+    color: white; 
+    padding: 12px 25px; 
+    border: none; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    font-size: 1.1em; 
+    transition: background-color 0.3s ease, transform 0.2s ease; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+  }
+  .button:hover { background-color: #2980b9; transform: translateY(-2px); }
+  .button:active { transform: translateY(0); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+  .button.off { background-color: #e74c3c; }
+  .button.off:hover { background-color: #c0392b; }
+  .settings-section { 
+    background-color: #ecf0f1; 
+    padding: 20px; 
+    border-radius: 10px; 
+    margin-bottom: 25px; 
+  }
+  .settings-section label { 
+    display: block; 
+    margin-bottom: 10px; 
+    font-weight: bold; 
+    color: #34495e; 
+    text-align: left; 
+  }
+  .settings-section input[type="number"] { 
+    width: calc(100% - 22px); 
+    padding: 10px; 
+    margin-bottom: 15px; 
+    border: 1px solid #bdc3c7; 
+    border-radius: 5px; 
+    font-size: 1em; 
+  }
+  .save-button { 
+    background-color: #27ae60; 
+    color: white; 
+    padding: 12px 25px; 
+    border: none; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    font-size: 1.1em; 
+    transition: background-color 0.3s ease, transform 0.2s ease; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+    width: 100%; 
+  }
+  .save-button:hover { background-color: #229954; transform: translateY(-2px); }
+  .save-button:active { transform: translateY(0); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+  .message { margin-top: 20px; font-weight: bold; color: #34495e; }
+  .mqtt-status { font-size: 0.9em; color: #7f8c8d; margin-top: 15px; }
+  .mqtt-status.connected { color: #27ae60; }
+  .mqtt-status.disconnected { color: #e74c3c; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Uzaktan Su Pompası Kontrolü</h1>
+  
+  <div class="status-section">
+    <p class="status-text">Pompa Durumu: <span id="pumpStatus">Bilinmiyor</span> <span id="statusIndicator" class="status-indicator status-unknown"></span></p>
+    <p class="status-text">Çalışma Süresi: <span id="displayCalismaSuresi">Yükleniyor...</span> saniye</p>
+    <p class="status-text">Döngü Aralığı: <span id="displayDonguAraligi">Yükleniyor...</span> saniye</p>
+  </div>
+
+  <h2>Manuel Kontrol</h2>
+  <div class="button-group">
+    <button class="button" onclick="publishCommand('ON')">Aç</button>
+    <button class="button off" onclick="publishCommand('OFF')">Kapat</button>
+  </div>
+
+  <h2>Otomatik Çalışma Ayarları</h2>
+  <div class="settings-section">
+    <label for="calismaSuresi">Çalışma Süresi (saniye):</label>
+    <input type="number" id="calismaSuresi" value="60" min="1" max="3600">
+    <label for="donguAraligi">Döngü Aralığı (saniye):</label>
+    <input type="number" id="donguAraligi" value="36000" min="1" max="86400">
+    <button class="save-button" onclick="saveSettings()">Ayarları Kaydet</button>
+  </div>
+  <p class="message" id="responseMessage"></p>
+  <p class="mqtt-status" id="mqttConnectionStatus">MQTT Bağlantı Durumu: Bağlanıyor...</p>
+
+  <script>
+    // MQTT Ayarları (NodeMCU kodundaki ile aynı olmalı!)
+    const MQTT_BROKER_ADDRESS = "997c5ae6812f459996c82c38253803c2.s1.eu.hivemq.cloud";
+    const MQTT_PORT = 8884; // TLS Websocket için doğru port (8883 yerine 8884)
+    const MQTT_CLIENT_ID = "WebPumpController_" + Math.random().toString(16).substr(2, 8); // Rastgele ID
+    const MQTT_USERNAME = "tunatk"; // HiveMQ Cloud kullanıcı adınız
+    const MQTT_PASSWORD = "GEN233psKK5GVDN"; // HiveMQ Cloud şifreniz
+
+    const MQTT_COMMAND_TOPIC = "home/pump/command";
+    const MQTT_STATUS_TOPIC = "home/pump/status";
+
+    let client; // MQTT istemci objesi
+
+    // MQTT'ye bağlanma fonksiyonu
+    function connectMqtt() {
+      const options = {
+        port: MQTT_PORT,
+        clientId: MQTT_CLIENT_ID,
+        username: MQTT_USERNAME,
+        password: MQTT_PASSWORD,
+        clean: true, // Her bağlantıda oturumu temizle
+        reconnectPeriod: 5000, // 5 saniyede bir yeniden bağlanmayı dene
+        protocol: 'wss', // Güvenli WebSocket bağlantısı
+      };
+
+      // Bağlantı URL'sini ve portu birleştir
+      client = mqtt.connect(`wss://${MQTT_BROKER_ADDRESS}:${MQTT_PORT}`, options);
+
+      client.on('connect', function () {
+        console.log('MQTT Broker\'a bağlandı!');
+        document.getElementById('mqttConnectionStatus').innerText = 'MQTT Bağlantı Durumu: Bağlandı';
+        document.getElementById('mqttConnectionStatus').className = 'mqtt-status connected';
+        client.subscribe(MQTT_STATUS_TOPIC, function (err) {
+          if (!err) {
+            console.log('Abone olundu: ' + MQTT_STATUS_TOPIC);
+          } else {
+            console.error('Abone olma hatası: ' + err);
+          }
+        });
+      });
+
+      client.on('message', function (topic, message) {
+        // Gelen mesajları işleme
+        console.log(`Mesaj geldi [${topic}]: ${message.toString()}`);
+        if (topic === MQTT_STATUS_TOPIC) {
+          updateUI(message.toString());
+        }
+      });
+
+      client.on('error', function (err) {
+        console.error('MQTT Hatası: ' + err);
+        document.getElementById('mqttConnectionStatus').innerText = 'MQTT Bağlantı Durumu: Hata! Yeniden bağlanılıyor...';
+        document.getElementById('mqttConnectionStatus').className = 'mqtt-status disconnected';
+      });
+
+      client.on('close', function() {
+        console.log('MQTT Bağlantısı kesildi.');
+        document.getElementById('mqttConnectionStatus').innerText = 'MQTT Bağlantı Durumu: Bağlantı kesildi. Yeniden bağlanılıyor...';
+        document.getElementById('mqttConnectionStatus').className = 'mqtt-status disconnected';
+      });
+
+      client.on('offline', function() {
+        console.log('MQTT Çevrimdışı.');
+        document.getElementById('mqttConnectionStatus').innerText = 'MQTT Bağlantı Durumu: Çevrimdışı. Yeniden bağlanılıyor...';
+        document.getElementById('mqttConnectionStatus').className = 'mqtt-status disconnected';
+      });
+    }
+
+    // UI'yi MQTT mesajına göre güncelleyen fonksiyon
+    function updateUI(message) {
+      if (message.startsWith("STATUS:")) {
+        const parts = message.substring(7).split(','); // "STATUS:" kısmını atla ve virgülle ayır
+        if (parts.length === 3) {
+          const status = parts[0];
+          const calismaSuresi = parts[1];
+          const donguAraligi = parts[2];
+
+          document.getElementById('pumpStatus').innerText = status === 'ON' ? 'Açık' : 'Kapalı';
+          document.getElementById('statusIndicator').className = 'status-indicator ' + (status === 'ON' ? 'status-on' : 'status-off');
+          document.getElementById('displayCalismaSuresi').innerText = calismaSuresi;
+          document.getElementById('displayDonguAraligi').innerText = donguAraligi;
+          document.getElementById('calismaSuresi').value = calismaSuresi; // Input alanlarını da güncelle
+          document.getElementById('donguAraligi').value = donguAraligi; // Input alanlarını da güncelle
+        }
+      }
+    }
+
+    // MQTT komutlarını yayınlama fonksiyonu
+    function publishCommand(command) {
+      if (client && client.connected) {
+        client.publish(MQTT_COMMAND_TOPIC, command);
+        document.getElementById('responseMessage').innerText = `Komut gönderildi: ${command}`;
+      } else {
+        document.getElementById('responseMessage').innerText = 'MQTT Bağlantısı yok. Lütfen bekleyin.';
+        console.error('MQTT istemcisi bağlı değil.');
+      }
+    }
+
+    // Ayarları kaydetme ve MQTT üzerinden gönderme
+    function saveSettings() {
+      const calismaSuresi = document.getElementById('calismaSuresi').value;
+      const donguAraligi = document.getElementById('donguAraligi').value;
+
+      if (parseInt(calismaSuresi) >= 1 && parseInt(calismaSuresi) <= 3600 &&
+          parseInt(donguAraligi) >= 1 && parseInt(donguAraligi) <= 86400 &&
+          parseInt(calismaSuresi) < parseInt(donguAraligi)) {
+        
+        const command = `SET_TIME:${calismaSuresi},${donguAraligi}`;
+        publishCommand(command);
+        document.getElementById('responseMessage').innerText = 'Ayarlar gönderildi.';
+      } else {
+        document.getElementById('responseMessage').innerText = 'Geçersiz ayar değerleri. Lütfen geçerli sayılar girin ve çalışma süresinin döngü aralığından kısa olduğundan emin olun.';
+      }
+    }
+
+    // Sayfa yüklendiğinde MQTT bağlantısını başlat
+    window.onload = connectMqtt;
+  </script>
+</div>
+</body>
+</html>
