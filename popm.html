@@ -145,7 +145,7 @@
   <script>
     // MQTT Ayarları (NodeMCU kodundaki ile aynı olmalı!)
     const MQTT_BROKER_ADDRESS = "997c5ae6812f459996c82c38253803c2.s1.eu.hivemq.cloud";
-    const MQTT_PORT = 8884; // TLS Websocket için doğru port (8883 yerine 8884)
+    const MQTT_PORT = 8884; // TLS Websocket için doğru port
     const MQTT_CLIENT_ID = "WebPumpController_" + Math.random().toString(16).substr(2, 8); // Rastgele ID
     const MQTT_USERNAME = "tunatk"; // HiveMQ Cloud kullanıcı adınız
     const MQTT_PASSWORD = "GEN233psKK5GVDN"; // HiveMQ Cloud şifreniz
@@ -168,7 +168,14 @@
       };
 
       // Bağlantı URL'sini ve portu birleştir
+      // HiveMQ Cloud'un TLS Websocket URL'si: wss://<broker_address>:8884/mqtt
+      // mqtt.js kütüphanesi bu "/mqtt" yolunu otomatik olarak ekleyebilir
+      // Ancak emin olmak için doğrudan URL'yi kullanmak daha güvenli olabilir.
+      // Eğer bu hala çalışmazsa, aşağıdaki satırı:
+      // client = mqtt.connect(`wss://${MQTT_BROKER_ADDRESS}:${MQTT_PORT}/mqtt`, options);
+      // olarak değiştirmeyi deneyebilirsiniz.
       client = mqtt.connect(`wss://${MQTT_BROKER_ADDRESS}:${MQTT_PORT}`, options);
+
 
       client.on('connect', function () {
         console.log('MQTT Broker\'a bağlandı!');
